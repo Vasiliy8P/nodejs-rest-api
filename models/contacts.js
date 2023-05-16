@@ -21,7 +21,7 @@ async function getContactById(contactId) {
 
 async function removeContact(contactId) {
     const contacts = await listContacts();
-    const index = contacts.findIndex(contact => contact.contactId === contactId);
+    const index = contacts.findIndex(contact => contact.id === contactId);
     if (index === -1) {
         return null
     };
@@ -45,11 +45,11 @@ async function addContact({ name, email, phone }) {
 
 async function updateContactById(contactId, { name, email, phone }) {
   const contacts = await listContacts();
-  const index = contacts.findIndex(contact => contact.contactId === contactId);
+  const index = contacts.findIndex(contact => contact.id === contactId);
   if (index === -1) {
       return null
   };
-  contacts[index] = { contactId, name, email, phone };
+  contacts[index] = { id: contactId, name, email, phone };
   await updateContacts(contacts);
   return contacts[index];  
 }
@@ -61,25 +61,3 @@ module.exports = {
   addContact,
   updateContactById,
 };
-
-
-
-// // const fs = require('fs/promises')
-
-// const listContacts = async () => {}
-
-// const getContactById = async (contactId) => {}
-
-// const removeContact = async (contactId) => {}
-
-// const addContact = async (body) => {}
-
-// const updateContact = async (contactId, body) => {}
-
-// module.exports = {
-//   listContacts,
-//   getContactById,
-//   removeContact,
-//   addContact,
-//   updateContact,
-// }
