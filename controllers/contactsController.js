@@ -26,7 +26,7 @@ const getContactById = async (req, res) => {
 const addContact = async (req, res) => {
     const { error } = addContactSchema.validate(req.body);
     if (error) {
-        throw HttpError(400, "missing required name field");
+        throw HttpError(400, `missing required ${error.details[0].context.key} field`);
     }
     const result = await contactsServise.addContact(req.body);
     res.status(201).json(result);
@@ -44,10 +44,15 @@ const removeContact = async (req, res) => {
 };
 
 const updateContactById = async (req, res) => {
-    const { error } = addContactSchema.validate(req.body);
-    if (error) {
+    if (!Object.keys(req.body).length) {
         throw HttpError(400, "missing fields");
     }
+    
+    const { error } = addContactSchema.validate(req.body);
+    if (error) {
+        throw HttpError(400, `missing required ${error.details[0].context.key} field`);
+    }
+
     const { contactId } = req.params;
     const result = await contactsServise.updateContactById(contactId, req.body);
     if (!result) {
