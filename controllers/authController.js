@@ -56,27 +56,40 @@ const login = async (req, res) => {
     });
 };
 
-const current = async (req, res) => {
+const getCurrent = async (req, res) => {
     const { email, subscription } = req.user;
 
     res.json({
         email,
         subscription,
-    })
-}
+    });
+};
 
 const logout = async (req, res) => {
     const { _id } = req.user;
-    await User.findByIdAndUpdate(_id, { token: "" })
+    await User.findByIdAndUpdate(_id, { token: "" });
     
     res.status(204).json({
         message: "No Content",
-    })
+    });
+};
+
+const changeSubscription = async (req, res) => {
+    const { _id } = req.user;
+    const {email, subscription} = await User.findByIdAndUpdate(_id, req.body, {new: true});
+    
+    res.json({
+        user: {
+            email,
+            subscription,
+        },
+    });
 }
 
 module.exports = {
     register: ctrlWrapper(register),
     login: ctrlWrapper(login),
-    current: ctrlWrapper(current),
+    getCurrent: ctrlWrapper(getCurrent),
     logout: ctrlWrapper(logout),
+    changeSubscription: ctrlWrapper(changeSubscription),
 };
