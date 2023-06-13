@@ -2,7 +2,7 @@ const express = require("express");
 const { validateBody } = require("../../decorators");
 const schemas = require("../../schemas/authSchemas");
 const authController = require("../../controllers/authController");
-const { authenticate } = require("../../middlewares");
+const { authenticate, upload } = require("../../middlewares");
 
 const router = express.Router();
 
@@ -14,6 +14,8 @@ router.get("/current", authenticate, authController.getCurrent);
 
 router.post("/logout", authenticate, authController.logout);
 
-router.patch("/users/subscription", authenticate, validateBody(schemas.subscriptionSchema), authController.changeSubscription);
+router.patch("/subscription", authenticate, validateBody(schemas.subscriptionSchema), authController.changeSubscription);
+
+router.patch("/avatars", authenticate, upload.single("avatar"), authController.updateAvatar)
 
 module.exports = router;
