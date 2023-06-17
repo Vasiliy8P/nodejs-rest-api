@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
-const { boolean } = require("joi");
 
 const userSchema = new Schema({
     password: {
